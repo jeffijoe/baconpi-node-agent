@@ -1,0 +1,14 @@
+{
+  "name": "AgentBacon",
+  "version": "0.0.0",
+  "description": "Agent for BaconPi",
+  "main": "agent.js",
+  "author": "Jeff Hansen",
+  "license": "None at the moment.",
+  "dependencies": {
+    "socket.io-client": "~0.9.16",
+    "wake_on_lan": "0.0.3",
+    "tough-cookie": "~0.12.1",
+    "getmac": "~1.0.6"
+  }
+}
