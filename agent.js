@@ -14,7 +14,7 @@ var io = require('socket.io-client'),
   getSocketSession = require('./lib/get_socket_session'),
   urlHelper = require('url'),
   wol = require('wake_on_lan'),
-  endpoint = process.argv[2] || 'http://localhost:1337';
+  endpoint = process.argv[2] || 'https://baconpi-jeffijoe.rhcloud.com:8443';
 
 console.log('');
 console.log('=== Agent Bacon taking care of your shit ===');
