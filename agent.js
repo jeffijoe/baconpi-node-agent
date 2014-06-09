@@ -18,6 +18,7 @@ var io = require('socket.io-client'),
 
 console.log('');
 console.log('=== Agent Bacon taking care of your shit ===');
+console.log('=== Endpoint: ', endpoint);
 console.log('');
 
 // Hit the server for a cookie.
@@ -57,12 +58,21 @@ function setupSocket(query) {
   });
   socket.on('wake', function(data) {
     console.log('Wake signal received for mac ', data.mac);
+    if (!data.mac) {
+      return socket.emit('signal:error', {
+        error: 'Mac Adress was not sent along with wakeup call.'
+      });
+    }
     wol.wake(data.mac, function(err) {
-      if (err)
+      if (err) {
         console.log('Wakeup failed: ', err);
-      else 
-        console.log('Wakeup signal sent!');
-      socket.emit('wakeSignalSent', {error: err});
+        return socket.emit('signal:error', {
+          error: err.message,
+          mac: data.mac
+        });
+      }
+      console.log('Wakeup signal sent!');
+      socket.emit('signal:send', data);
     });
   });
   socket.on('disconnect', function() {
