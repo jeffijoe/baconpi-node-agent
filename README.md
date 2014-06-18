@@ -20,3 +20,15 @@ Firstly, make sure you have added your device to your BaconPi account. Then, run
 ```
 baconpi
 ```
+
+
+Commands
+========
+
+Other than the main `baconpi` command, you can also run
+
+```
+baconpi --mac
+```
+
+to easily optain your device's MAC address.
