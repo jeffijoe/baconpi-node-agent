@@ -1,6 +1,6 @@
 {
   "name": "baconpi",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Agent for BaconPi",
   "main": "agent.js",
   "author": "Jeff Hansen",
@@ -8,6 +8,8 @@
   "bin": {
     "baconpi": "bin/baconpi"
   },
+  "engines" : { "node" : ">=0.10.0" },
+  "engineStrict": true,
   "dependencies": {
     "socket.io-client": "~0.9.x",
     "wake_on_lan": "0.0.x",
