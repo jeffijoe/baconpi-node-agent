@@ -40,9 +40,7 @@ to easily optain your device's MAC address.
 Author
 =======
 
-Jeff Hansen
-http://jeffijoe.com
-http://twitter.com/jeffijoe
+Jeff Hansen ( http://jeffijoe.com , http://twitter.com/jeffijoe )
 
 License: DBADPL (Don't Be A Dick Public License)
 ================================================
