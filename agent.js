@@ -3,7 +3,7 @@
  * @author Jeff Hansen
  * @description Agent Bacon
  */
-/*global require, console, process*/
+/*global require, console, module*/
 'use strict';
 module.exports = function(agentOpts) {
   /**
@@ -16,22 +16,26 @@ module.exports = function(agentOpts) {
     getSocketSession = require('./lib/get_socket_session'),
     urlHelper = require('url'),
     wol = require('wake_on_lan'),
-    endpoint = process.argv[2] || 'https://baconpi-jeffijoe.rhcloud.com',
-    sessionPort = process.argv[3] || '443',
-    socketPort = process.argv[4] || 8443;
+    endpoint = agentOpts.endpoint,
+    sessionPort = agentOpts.sessionPort,
+    socketPort = agentOpts.socketPort;
 
   console.log('');
   console.log('=== Agent Bacon started @ ' + time.now());
+  console.log('=== Copyright (C) Jeff Hansen - Jeffijoe.com 2014.');
   console.log('=== Endpoint: ', endpoint);
   console.log('');
 
   // Hit the server for a cookie.
+  log('Establishing session with server..');
   getSocketSession({
     url: urlHelper.resolve(endpoint + ':' + sessionPort, '/api/session/establish')
   }, function(err, query) {
     if (err) throw err;
+    log('Grabbing MAC address...');
     getMac(function(err, mac) {
       if (err) throw err;
+      log('MAC address:  ' + mac);
       createQuery(query, mac);
     });
   });
@@ -55,8 +59,7 @@ module.exports = function(agentOpts) {
 
   function log(message) {
     message = '[' + time.now() + '] ' + message;
-    var args = [message].concat(Array.prototype.slice(arguments, 1));
-    console.log.apply(console, args);
+    console.log(message);
   }
 
   /**
@@ -65,14 +68,15 @@ module.exports = function(agentOpts) {
    */
 
   function setupSocket(query) {
+    log('Connecting to socket server..');
     var socket = io.connect(endpoint + ':' + socketPort + '/agentsocket', {
       query: query
     });
     socket.on('connect', function() {
-      log('Socket connected!');
+      log('Socket connected and ready to receive wake-up calls! Woo!');
     });
     socket.on('wake', function(data) {
-      log('Wake signal received for mac ', data.mac);
+      log('Wake signal received for MAC: ' + data.mac);
       if (!data.mac) {
         return socket.emit('signal:error', {
           error: 'Mac Adress was not sent along with wakeup call.'
@@ -91,7 +95,7 @@ module.exports = function(agentOpts) {
       });
     });
     socket.on('disconnect', function() {
-      log('Disconnected.');
+      log('Disconnected from socket server. Will attempt to reconnect soon.');
     });
     socket.on('error', function(err) {
       log('Socket error: ' + err);

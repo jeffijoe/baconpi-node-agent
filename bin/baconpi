@@ -1,0 +1,28 @@
+#!/usr/bin/env node
+
+'use strict';
+
+var baconpi = require('../agent'),
+    getMac = require('getmac').getMac;
+
+// Helper commands..
+var command = process.argv[2];
+switch (command) {
+  case '--mac':
+    return printMac();
+}
+
+// Run the actual BaconPi program.
+baconpi({
+  endpoint: process.argv[2] || 'https://baconpi-jeffijoe.rhcloud.com',
+  sessionPort: process.argv[3] || '443',
+  socketPort: process.argv[4] || 8443
+});
+
+function printMac() {
+  console.log('Scanning for your MAC address..');
+  getMac(function  (err, mac) {
+    if(err) console.log('An error occured while grabbing MAC address: ', mac);
+    console.log('MAC address: ', mac);
+  });
+}

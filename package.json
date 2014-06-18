@@ -4,15 +4,15 @@
   "description": "Agent for BaconPi",
   "main": "agent.js",
   "author": "Jeff Hansen",
-  "license": "MIT",
+  "license": "DBAD",
   "bin": {
-    "baconpi": "./bin/baconpi"
+    "baconpi": "bin/baconpi"
   },
   "dependencies": {
-    "socket.io-client": "~0.9.16",
-    "wake_on_lan": "0.0.3",
-    "getmac": "~1.0.6",
-    "request": "~2.36.0",
-    "request-replay": "~0.3.0"
+    "socket.io-client": "~0.9.x",
+    "wake_on_lan": "0.0.x",
+    "getmac": "~1.0.x",
+    "request": "~2.36.x",
+    "request-replay": "~0.3.x"
   }
 }
