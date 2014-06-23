@@ -18,6 +18,8 @@ module.exports = function(agentOpts) {
     wol = require('wake_on_lan'),
     endpoint = agentOpts.endpoint,
     sessionPort = agentOpts.sessionPort,
+    keepaliveHandle = null,
+    keepaliveMs = 60*60*1000,
     socketPort = agentOpts.socketPort;
 
   console.log('');
@@ -94,11 +96,21 @@ module.exports = function(agentOpts) {
         socket.emit('signal:send', data);
       });
     });
+    socket.on('pong', function () {
+      log('Server responsed to keepalive signal.');
+    });
     socket.on('disconnect', function() {
       log('Disconnected from socket server. Will attempt to reconnect soon.');
     });
     socket.on('error', function(err) {
       log('Socket error: ' + err);
     });
+    
+    keepaliveHandle = setInterval(function () {
+      if(socket && socket.socket.connected) {
+        socket.emit('ping');
+        log('Sent keepalive signal.');
+      }
+    }, keepaliveMs);
   }
 };
