@@ -2,14 +2,20 @@
 
 'use strict';
 
-var baconpi = require('../agent'),
+var 
+    baconpi = require('../agent'),
+    pkg = require('../package.json'),
     getMac = require('getmac').getMac;
 
 // Helper commands..
 var command = process.argv[2];
 switch (command) {
   case '--mac':
+  case '-m':
     return printMac();
+  case '--version':
+  case '-v':
+    return printVersion();
 }
 
 // Run the actual BaconPi program.
@@ -25,4 +31,8 @@ function printMac() {
     if(err) console.log('An error occured while grabbing MAC address: ', mac);
     console.log('MAC address: ', mac);
   });
+}
+
+function printVersion() {
+  console.log('BaconPi Node Agent v'+pkg.version);
 }

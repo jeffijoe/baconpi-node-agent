@@ -5,25 +5,27 @@
  */
 /*global require, console, module*/
 'use strict';
-module.exports = function(agentOpts) {
-  /**
-   * Module requirements
-   */
-  var io = require('socket.io-client'),
+
+var 
+    pkg = require('./package.json'),
+    io = require('socket.io-client'),
     querystring = require('querystring'),
     time = require('./lib/time'),
     getMac = require('getmac').getMac,
     getSocketSession = require('./lib/get_socket_session'),
     urlHelper = require('url'),
-    wol = require('wake_on_lan'),
-    endpoint = agentOpts.endpoint,
-    sessionPort = agentOpts.sessionPort,
-    keepaliveHandle = null,
-    keepaliveMs = 60*60*1000,
-    socketPort = agentOpts.socketPort;
+    wol = require('wake_on_lan');
+
+module.exports = function(agentOpts) {
+  /**
+   * Module requirements
+   */
+  var endpoint = agentOpts.endpoint,
+      sessionPort = agentOpts.sessionPort,
+      socketPort = agentOpts.socketPort;
 
   console.log('');
-  console.log('=== Agent Bacon started @ ' + time.now());
+  console.log('=== Agent Bacon (v'+pkg.version+') started @ ' + time.now());
   console.log('=== Copyright (C) Jeff Hansen - Jeffijoe.com 2014.');
   console.log('=== Endpoint: ', endpoint);
   console.log('');
@@ -96,21 +98,12 @@ module.exports = function(agentOpts) {
         socket.emit('signal:send', data);
       });
     });
-    socket.on('pong', function () {
-      log('Server responsed to keepalive signal.');
-    });
+    
     socket.on('disconnect', function() {
       log('Disconnected from socket server. Will attempt to reconnect soon.');
     });
     socket.on('error', function(err) {
       log('Socket error: ' + err);
     });
-    
-    keepaliveHandle = setInterval(function () {
-      if(socket && socket.socket.connected) {
-        socket.emit('ping');
-        log('Sent keepalive signal.');
-      }
-    }, keepaliveMs);
   }
 };
