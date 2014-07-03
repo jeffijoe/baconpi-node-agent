@@ -3,9 +3,9 @@
 'use strict';
 
 var 
-    baconpi = require('../agent'),
     pkg = require('../package.json'),
-    getMac = require('getmac').getMac;
+    getMac = require('getmac').getMac,
+    forever = require('forever-monitor');
 
 // Helper commands..
 var command = process.argv[2];
@@ -18,12 +18,17 @@ switch (command) {
     return printVersion();
 }
 
-// Run the actual BaconPi program.
-baconpi({
-  endpoint: process.argv[2] || 'https://baconpi-jeffijoe.rhcloud.com',
-  sessionPort: process.argv[3] || '443',
-  socketPort: process.argv[4] || 8443
+// Start the monitor.
+var child = new (forever.Monitor)('child', {
+  max: 5,
+  silent: false
 });
+
+child.on('exit', function () {
+  console.log('BaconPi has exited after 5 restarts');
+});
+
+child.start();
 
 function printMac() {
   console.log('Scanning for your MAC address..');

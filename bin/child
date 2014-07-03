@@ -1,0 +1,13 @@
+/**
+ * Child to be spawned by Forever.
+ */
+/*global require, process*/
+'use strict';
+var baconpi = require('../agent');
+
+// Run the actual BaconPi program.
+baconpi({
+  endpoint: process.argv[2] || 'https://baconpi-jeffijoe.rhcloud.com',
+  sessionPort: process.argv[3] || '443',
+  socketPort: process.argv[4] || 8443
+});
