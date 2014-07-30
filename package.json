@@ -1,6 +1,6 @@
 {
     "name": "baconpi",
-    "version": "0.2.9",
+    "version": "0.2.10",
     "description": "Agent for BaconPi",
     "main": "agent.js",
     "author": "Jeff Hansen",
