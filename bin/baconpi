@@ -4,6 +4,7 @@
 
 var 
     pkg = require('../package.json'),
+    path = require('path'),
     getMac = require('getmac').getMac,
     forever = require('forever-monitor');
 
@@ -19,7 +20,8 @@ switch (command) {
 }
 
 // Start the monitor.
-var child = new (forever.Monitor)('child', {
+var scriptPath = path.normalize(__dirname + '/child');
+var child = new (forever.Monitor)(scriptPath, {
   max: 5,
   silent: false
 });

@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /**
  * Child to be spawned by Forever.
  */
