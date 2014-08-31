@@ -6,6 +6,7 @@ var
     pkg = require('../package.json'),
     path = require('path'),
     getMac = require('getmac').getMac,
+    maxRestarts = 100,
     forever = require('forever-monitor');
 
 // Helper commands..
@@ -22,12 +23,12 @@ switch (command) {
 // Start the monitor.
 var scriptPath = path.normalize(__dirname + '/child');
 var child = new (forever.Monitor)(scriptPath, {
-  max: 5,
+  max: maxRestarts,
   silent: false
 });
 
 child.on('exit', function () {
-  console.log('BaconPi has exited after 5 restarts');
+  console.log('BaconPi has exited after '+maxRestarts+' restarts');
 });
 
 child.start();
